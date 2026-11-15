@@ -1,0 +1,43 @@
+SECURE PDF DOWNLOAD - SETUP GUIDE (Roman Urdu)
+================================================
+Ye kaam sirf ek baar karna hai. Isse customer payment confirm hone ke baad
+website se khud PDF download kar sakega, aur PDFs public nahi hon gi.
+
+STEP 1  supabase.com par free account banayein -> "New project".
+STEP 2  SQL Editor -> New query -> schema.sql ka poora text paste -> Run.
+STEP 3  Storage -> bucket "books" (private) mein 7 PDFs upload karein.
+        File ke naam bilkul ye hone chahiye:
+          b1.pdf  Let's Learn Arabic
+          b2.pdf  Arabic Letter Shapes & Activities
+          b3.pdf  Letter Shapes: Alif to Yaa
+          b4.pdf  Arabic Harakat & Activities
+          b5.pdf  Arabic Letters with Short Harakat
+          b6.pdf  Arabic Letter Learners
+          b7.pdf  Arabic Letters Made Easy
+        (pdfs-for-upload.zip mein yehi naam wali files tayyar hain.)
+STEP 4  Computer par Supabase CLI install karein (supabase.com/docs/guides/cli), phir
+        is "backend" folder mein terminal kholein:
+          supabase login
+          supabase link --project-ref YOUR_PROJECT_REF
+          supabase functions deploy create-order --no-verify-jwt
+          supabase functions deploy get-downloads --no-verify-jwt
+        (YOUR_PROJECT_REF Supabase > Project Settings mein milta hai.)
+STEP 5  script.js kholein, shuru mein CFG ke andar:
+          api:"https://YOUR_PROJECT_REF.supabase.co/functions/v1",
+        likh dein, phir website dobara hosting par upload karein.
+
+ROZANA KA KAAM (payment confirm karna)
+  1. Customer WhatsApp par order number aur payment screenshot bhejta hai.
+  2. Aap JazzCash mein payment check karein.
+  3. Supabase > Table Editor > orders > us order number ki row kholein >
+     status ko "paid" kar dein. (30 din ka download time khud shuru ho jata hai.)
+  4. Customer ko WhatsApp par bata dein: "Website ke My Downloads mein order
+     number aur apna WhatsApp number likh kar PDF download karein."
+
+HIFAZAT
+  - PDFs private bucket mein hain, direct link kaam nahi karta.
+  - Har download link sirf 2 minute chalta hai.
+  - Order number AUR WhatsApp number dono sahi hon tabhi download milta hai.
+  - Har order par 30 din aur 15 downloads (orders table mein max_downloads aur
+    expires_at se badal sakti hain).
+  - Price (Rs 400) server par tay hota hai: create-order/index.ts mein PRICE.
